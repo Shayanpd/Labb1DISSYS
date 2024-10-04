@@ -19,7 +19,7 @@ public class JDBCTest {
 
         String user = args[0]; // user name
         String pwd = args[1]; // password 
-        System.out.println(user + ", *********");
+        System.out.println(user + ", " + pwd);
         String database = "webshop_db"; // the name of the specific database
         String server
                 = "jdbc:mysql://localhost:3306/" + database
