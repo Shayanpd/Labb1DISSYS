@@ -1,16 +1,40 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+<%@ page import="Model.Product" %>
+<%@ page import="java.util.List" %>
+
 <html>
 <head>
-    <title>Welcome to the Web Shop</title>
-    <link rel="stylesheet" type="text/css" href="styles.css"> <!-- Optional CSS file -->
+    <title>Product List</title>
 </head>
 <body>
-<h1>Welcome to the Web Shop!</h1>
-<p>Your one-stop shop for all your needs.</p>
-<ul>
-    <li><a href="cart">Go to Shopping Cart</a></li>
-    <li><a href="products">Browse Products</a></li>
-</ul>
+<h1>Products</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+    <%
+        // Get the list of products from the request
+        List<Product> products = (List<Product>) request.getAttribute("products");
+        if (products != null && !products.isEmpty()) {
+            for (Product product : products) {
+    %>
+    <tr>
+        <td><%= product.getProductId() %></td>
+        <td><%= product.getName() %></td>
+        <td><%= product.getPrice() %></td>
+    </tr>
+    <%
+        }
+    } else {
+    %>
+    <tr>
+        <td colspan="3">No products available</td>
+    </tr>
+    <%
+        }
+    %>
+</table>
 </body>
 </html>

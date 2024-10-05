@@ -1,4 +1,4 @@
-package main.Model;
+package Model;
 
 public class CartItem {
     private int cartItemId;

@@ -1,34 +1,24 @@
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
-         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
-         version="4.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+        version="5.0"
+        metadata-complete="false">
 
-    <!-- Define a servlet for the shopping cart -->
+    <!-- Define a servlet for managing products -->
     <servlet>
-        <servlet-name>ShoppingCartServlet</servlet-name>
-        <servlet-class>Example.ShoppingCartServlet</servlet-class>
+        <servlet-name>ProductController</servlet-name>
+        <servlet-class>controller.ProductController</servlet-class>
     </servlet>
 
-    <!-- Map /cart to ShoppingCartServlet -->
+    <!-- Map /products-list and / (root URL) to ProductController -->
     <servlet-mapping>
-        <servlet-name>ShoppingCartServlet</servlet-name>
-        <url-pattern>/cart</url-pattern>
+        <servlet-name>ProductController</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!-- Define a second servlet for user accounts -->
-    <servlet>
-        <servlet-name>UserAccountServlet</servlet-name>
-        <servlet-class>Example.UserAccountServlet</servlet-class>
-    </servlet>
-
-    <!-- Map /account to UserAccountServlet -->
-    <servlet-mapping>
-        <servlet-name>UserAccountServlet</servlet-name>
-        <url-pattern>/account</url-pattern>
-    </servlet-mapping>
-
-    <!-- Configure a welcome page -->
+    <!-- Configure a welcome page to point to the root URL -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
