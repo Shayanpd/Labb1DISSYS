@@ -13,7 +13,7 @@ public class JDBCTest {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            System.out.println("Usage: java JDBCTest <user> <password>");
+            System.out.println("Username: " + args[0] + " password: " + args[1]);
             System.exit(0);
         }
 
