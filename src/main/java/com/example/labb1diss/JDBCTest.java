@@ -1,4 +1,4 @@
-package main.java.com.example.labb1diss;
+package com.example.labb1diss;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
