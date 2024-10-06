@@ -58,16 +58,20 @@ public class UserDAO {
         stmt.executeUpdate();
     }
 
-    // Verify login credentials
-    public boolean verifyUser(String username, String password) throws SQLException {
-        String query = "SELECT * FROM Users WHERE username = ? AND password = ?";
+    public User authenticate(String username, String password) throws SQLException {
+        String query = "SELECT username, password, role FROM Users WHERE username = ? AND password = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, username);
         stmt.setString(2, password);
 
         ResultSet rs = stmt.executeQuery();
-        return rs.next(); // Returns true if a user with the given username and password exists
-    }
 
+        if (rs.next()) {
+            // If a user is found, return a new User object with username, password, and role
+            String role = rs.getString("role");
+            return new User(username, password, role);
+        }
+        return null;  // Return null if authentication fails
+    }
     // Additional methods could include finding users by username, etc.
 }

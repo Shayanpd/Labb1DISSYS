@@ -1,7 +1,6 @@
 package com.example.labb1diss;
 
 import com.mysql.cj.util.SearchMode;
-import main.Model.*;
 import java.sql.SQLException;
 import java.util.List;
 

@@ -17,7 +17,7 @@ public class ConnectionManager {
     }
 
     // Method to get a new connection
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
