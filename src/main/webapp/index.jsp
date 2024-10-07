@@ -2,6 +2,15 @@
 <%@ page import="Model.Product" %>
 <%@ page import="java.util.List" %>
 
+<%
+    // Check if the user is logged in by checking the session
+    if (session.getAttribute("user") == null) {
+        // User is not logged in, redirect to login.jsp
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+
 <html>
 <head>
     <title>Product List</title>
@@ -26,8 +35,8 @@
         <td><%= product.getPrice() %></td>
     </tr>
     <%
-        }
-    } else {
+            }
+        } else {
     %>
     <tr>
         <td colspan="3">No products available</td>
