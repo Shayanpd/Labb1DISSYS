@@ -17,7 +17,7 @@ import java.sql.SQLException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -32,13 +32,15 @@ public class LoginServlet extends HttpServlet {
             User user = userDAO.authenticate(username, password);
 
             if (user != null) {
-                // User authenticated successfully, proceed with session handling
-                request.getSession().setAttribute("user", user);
+                // Store the specific user in session (including userID, username, etc.)
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);  // Store the entire User object
 
+                // Redirect based on role or other logic
                 if ("admin".equals(user.getRole())) {
                     response.sendRedirect("admin.jsp");  // Redirect to admin page
                 } else {
-                    response.sendRedirect("products.jsp");  // Redirect to user page
+                    response.sendRedirect("userInfo.jsp");  // Redirect to temporary user page for regular users
                 }
             } else {
                 // Authentication failed

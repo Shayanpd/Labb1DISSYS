@@ -7,15 +7,16 @@ public class User {
     private String email;
     private String role;
 
-    public User(int userId, String username, String password, String email) {
+    public User(int userId, String username, String password, String email, String role) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.role = role;
     }
 
-    public User(String username, String password, String email) {
-        this(0, username, password, email);
+    public User(String username, String password, String email, String role) {
+        this(0, username, password, email, role);
     }
 
     public int getUserId() {
@@ -60,7 +61,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
-
 }

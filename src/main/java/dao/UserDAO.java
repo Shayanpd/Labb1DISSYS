@@ -24,7 +24,7 @@ public class UserDAO {
 
         if (rs.next()) {
             // Make sure to retrieve the email as well
-            return new User(rs.getInt("userID"), rs.getString("username"), rs.getString("password"), rs.getString("email"));
+            return new User(rs.getInt("userID"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("role"));
         }
         return null; // Return null if no user is found
     }
@@ -59,7 +59,7 @@ public class UserDAO {
     }
 
     public User authenticate(String username, String password) throws SQLException {
-        String query = "SELECT username, password, role FROM Users WHERE username = ? AND password = ?";
+        String query = "SELECT userID, username, password, email, role FROM Users WHERE username = ? AND password = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, username);
         stmt.setString(2, password);
@@ -67,9 +67,11 @@ public class UserDAO {
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
-            // If a user is found, return a new User object with username, password, and role
+            // If a user is found, return a User object with all relevant info
+            int userID = rs.getInt("userID");
+            String email = rs.getString("email");
             String role = rs.getString("role");
-            return new User(username, password, role);
+            return new User(userID, username, password, email, role);
         }
         return null;  // Return null if authentication fails
     }
