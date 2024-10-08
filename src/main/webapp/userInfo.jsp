@@ -1,4 +1,5 @@
 <%@ page import="dto.UserDTO" %>
+<%@ include file="header.jsp" %>
 <html>
 <head>
     <title>User Info</title>

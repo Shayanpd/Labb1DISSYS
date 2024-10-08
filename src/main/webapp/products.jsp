@@ -2,6 +2,7 @@
 <%@ page import="dto.ProductDTO" %>
 <%@ page import="dto.UserDTO" %>
 <%@ page import="java.util.List" %>
+<%@ include file="header.jsp" %>
 
 <%
     // Check if the user is logged in
@@ -58,8 +59,5 @@
     <% } else { %>
         <p>No products are available at the moment.</p>
     <% } %>
-
-    <p><a href="viewCart.jsp">View Your Cart</a></p>
-    <p><a href="logout.jsp">Log out</a></p>
 </body>
 </html>
