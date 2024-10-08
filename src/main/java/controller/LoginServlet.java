@@ -1,8 +1,8 @@
 package controller;
 
+import Model.Cart;
 import dao.*;
 import dto.UserDTO;
-import dto.CartDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,8 +41,8 @@ public class LoginServlet extends HttpServlet {
                 // Handle logic for regular users vs admin
                 if ("user".equals(userDTO.getRole())) {
                     // Create an empty CartDTO for the user and store it in session
-                    CartDTO cartDTO = new CartDTO(userDTO.getUserId());
-                    session.setAttribute("cart", cartDTO); // Store the cart in the session
+                    Cart cart = new Cart(userDTO.getUserId());
+                    session.setAttribute("cart", cart); // Store the cart in the session
 
                     // Redirect to the user information page
                     response.sendRedirect("userInfo.jsp");
