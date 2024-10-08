@@ -2,7 +2,9 @@ package dto;
 
 public class CartItemDTO {
     private int cartItemId;
+    private int cartId;
     private ProductDTO product;
+    private int productId;
     private int quantity;
 
     // Constructor
@@ -11,6 +13,15 @@ public class CartItemDTO {
         this.product = product;
         this.quantity = quantity;
     }
+    // Constructor with productID (for initial creation where only productID is known)
+    public CartItemDTO(int cartItemId, int cartId, int productId, int quantity) {
+        this.cartItemId = cartItemId;
+        this.cartId = cartId;
+        this.productId = productId;  // Store productId
+        this.quantity = quantity;
+    }
+
+
 
     // Getters and setters
     public int getCartItemId() {

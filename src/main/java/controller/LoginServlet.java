@@ -1,9 +1,9 @@
 package controller;
 
-
 import Model.*;
 import dao.*;
-import jakarta.servlet.ServletException;
+import dto.UserDTO;
+import dto.CartDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,22 +28,34 @@ public class LoginServlet extends HttpServlet {
             // Create UserDAO with the connection
             UserDAO userDAO = new UserDAO(connection);
 
-            // Authenticate the user
-            User user = userDAO.authenticate(username, password);
+            // Authenticate the user (this returns a User model)
+            UserDTO user = userDAO.authenticate(username, password);
 
             if (user != null) {
-                // Store the specific user in session (including userID, username, etc.)
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);  // Store the entire User object
+                // Create a UserDTO to store in session (don't expose full User object)
+                UserDTO userDTO = new UserDTO(user.getUserId(), user.getUsername(), user.getEmail(), user.getRole());
 
-                // Redirect based on role or other logic
-                if ("admin".equals(user.getRole())) {
-                    response.sendRedirect("admin.jsp");  // Redirect to admin page
+                // Store the UserDTO in the session
+                HttpSession session = request.getSession();
+                session.setAttribute("user", userDTO);  // Store the UserDTO
+
+                // Handle logic for regular users vs admin
+                if ("user".equals(userDTO.getRole())) {
+                    // Create an empty CartDTO for the user and store it in session
+                    CartDTO cartDTO = new CartDTO(userDTO.getUserId());
+                    session.setAttribute("cart", cartDTO); // Store the cart in the session
+
+                    // Redirect to the user information page
+                    response.sendRedirect("userInfo.jsp");
+
                 } else {
-                    response.sendRedirect("userInfo.jsp");  // Redirect to temporary user page for regular users
+                    // Admins don't have a cart, ensure it's removed if it exists
+                    session.removeAttribute("cart");
+                    response.sendRedirect("admin.jsp");  // Redirect to admin page
                 }
+
             } else {
-                // Authentication failed
+                // Authentication failed, redirect back to login with an error flag
                 response.sendRedirect("login.jsp?error=1");
             }
 

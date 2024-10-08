@@ -1,7 +1,8 @@
 package dao;
 
 import Model.Cart;
-import Model.CartItem;
+import dto.CartDTO;
+import dto.CartItemDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,22 +17,27 @@ public class CartDAO {
         this.connection = connection;
     }
 
-    public Cart getCartById(int cartId) throws SQLException {
+    // Fetch cart by ID as DTO
+    public CartDTO getCartById(int cartId, CartItemDAO cartItemDAO) throws SQLException {
         String query = "SELECT * FROM Cart WHERE cartID = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, cartId);
 
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
-            return new Cart(
-                    rs.getInt("cartID"),
-                    rs.getInt("userID"),
-                    null // Initially set cartItems to null, will be populated later
-            );
+            // Create the CartDTO
+            CartDTO cartDTO = new CartDTO(rs.getInt("cartID"));
+
+            // Populate CartItems in the CartDTO
+            List<CartItemDTO> cartItems = cartItemDAO.getAllCartItemsByCartId(cartId);
+            cartDTO.setCartItems(cartItems);
+
+            return cartDTO;
         }
         return null;
     }
 
+    // Add a new cart using Cart model
     public void addCart(Cart cart) throws SQLException {
         String query = "INSERT INTO Cart (userID) VALUES (?)";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -39,17 +45,11 @@ public class CartDAO {
         stmt.executeUpdate();
     }
 
+    // Delete a cart by ID
     public void deleteCart(int cartId) throws SQLException {
         String query = "DELETE FROM Cart WHERE cartID = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, cartId);
         stmt.executeUpdate();
-    }
-
-    // Additional method to populate cart items for a given cart ID
-    public void populateCartItems(Cart cart, CartItemDAO cartItemDAO) throws SQLException {
-        // Get all items associated with this cart
-        List<CartItem> items = cartItemDAO.getAllCartItemsByCartId(cart.getCartId());
-        cart.setCartItems(items);
     }
 }

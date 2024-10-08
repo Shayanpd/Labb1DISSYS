@@ -1,6 +1,7 @@
 package dao;
 
 import Model.User;
+import dto.UserDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,32 +15,36 @@ public class UserDAO {
         this.connection = connection;
     }
 
-    // Fetch user by ID
-    public User getUserById(int id) throws SQLException {
-        String query = "SELECT * FROM Users WHERE userID = ?"; // Ensure table name matches your schema
+    // Fetch user by ID as DTO
+    public UserDTO getUserById(int id) throws SQLException {
+        String query = "SELECT * FROM Users WHERE userID = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, id);
 
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
-            // Make sure to retrieve the email as well
-            return new User(rs.getInt("userID"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("role"));
+            return new UserDTO(
+                    rs.getInt("userID"),
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("role")
+            );
         }
-        return null; // Return null if no user is found
+        return null;
     }
 
-    // Add a new user
+    // Add a new user using User model
     public void addUser(User user) throws SQLException {
-        String query = "INSERT INTO Users (username, password, email) VALUES (?, ?, ?)"; // Include email in the query
+        String query = "INSERT INTO Users (username, password, email) VALUES (?, ?, ?)";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, user.getUsername());
         stmt.setString(2, user.getPassword());
-        stmt.setString(3, user.getEmail()); // Set email value
+        stmt.setString(3, user.getEmail());
         stmt.executeUpdate();
     }
 
-    // Update user details
+    // Update user details using User model
     public void updateUser(User user) throws SQLException {
         String query = "UPDATE Users SET username = ?, password = ?, email = ? WHERE userID = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -58,8 +63,9 @@ public class UserDAO {
         stmt.executeUpdate();
     }
 
-    public User authenticate(String username, String password) throws SQLException {
-        String query = "SELECT userID, username, password, email, role FROM Users WHERE username = ? AND password = ?";
+    // Authenticate user and return a DTO
+    public UserDTO authenticate(String username, String password) throws SQLException {
+        String query = "SELECT userID, username, email, role FROM Users WHERE username = ? AND password = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, username);
         stmt.setString(2, password);
@@ -67,13 +73,13 @@ public class UserDAO {
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
-            // If a user is found, return a User object with all relevant info
-            int userID = rs.getInt("userID");
-            String email = rs.getString("email");
-            String role = rs.getString("role");
-            return new User(userID, username, password, email, role);
+            return new UserDTO(
+                    rs.getInt("userID"),
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("role")
+            );
         }
-        return null;  // Return null if authentication fails
+        return null; // Return null if authentication fails
     }
-    // Additional methods could include finding users by username, etc.
 }

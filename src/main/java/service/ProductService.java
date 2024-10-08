@@ -3,6 +3,7 @@ package service;
 import dao.ConnectionManager;
 import dao.ProductDAO;
 import Model.Product;
+import dto.ProductDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ public class ProductService {
         this.productDAO = new ProductDAO(connectionManager);
     }
 
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         try {
-            List<Product> products = productDAO.getAllProducts();
+            List<ProductDTO> products = productDAO.getAllProducts();
             if (products == null) {
                 products = new ArrayList<>();  // Ensure products is not null
             }
@@ -30,7 +31,7 @@ public class ProductService {
 
 
     // Get product by ID
-    public Product getProductById(int id) {
+    public ProductDTO getProductById(int id) {
         try {
             return productDAO.getProductById(id);
         } catch (SQLException e) {
