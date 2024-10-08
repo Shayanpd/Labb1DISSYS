@@ -1,6 +1,5 @@
 package controller;
 
-import Model.*;
 import dao.*;
 import dto.UserDTO;
 import dto.CartDTO;

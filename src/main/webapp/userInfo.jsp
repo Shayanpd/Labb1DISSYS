@@ -17,11 +17,9 @@
         }
     %>
     <h2>Welcome, <%= user.getUsername() %>!</h2>
-
     <!-- Button to redirect to products.jsp -->
-    <form action="products.jsp" method="get">
+    <form action="products" method="get">
         <input type="submit" value="Go to Products">
     </form>
-
 </body>
 </html>
