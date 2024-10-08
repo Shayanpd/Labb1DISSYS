@@ -57,7 +57,9 @@
             <% } %>
         </table>
     <% } else { %>
-        <p>No products are available at the moment.</p>
+        <p>No products are available at the moment. Please check back later.</p>
     <% } %>
+
+    <p><a href="viewCart.jsp">View Cart</a></p> <!-- Link to view the cart -->
 </body>
 </html>

@@ -7,29 +7,19 @@ public class CartItemDTO {
     private int productId;
     private int quantity;
 
-    // Constructor
+    // Constructor with full ProductDTO
     public CartItemDTO(int cartItemId, ProductDTO product, int quantity) {
         this.cartItemId = cartItemId;
         this.product = product;
         this.quantity = quantity;
     }
-    // Constructor with productID (for initial creation where only productID is known)
+
+    // Constructor with productID (initial creation where only productID is known)
     public CartItemDTO(int cartItemId, int cartId, int productId, int quantity) {
         this.cartItemId = cartItemId;
         this.cartId = cartId;
-        this.productId = productId;  // Store productId
+        this.productId = productId;
         this.quantity = quantity;
-    }
-
-
-
-    // Getters and setters
-    public int getCartItemId() {
-        return cartItemId;
-    }
-
-    public void setCartItemId(int cartItemId) {
-        this.cartItemId = cartItemId;
     }
 
     public ProductDTO getProduct() {
@@ -38,6 +28,10 @@ public class CartItemDTO {
 
     public void setProduct(ProductDTO product) {
         this.product = product;
+    }
+
+    public int getProductId() {
+        return productId;
     }
 
     public int getQuantity() {

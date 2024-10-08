@@ -1,12 +1,13 @@
-<%@ include file="header.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="dto.CartDTO" %>
 <%@ page import="dto.CartItemDTO" %>
+<%@ page import="dto.ProductDTO" %>
 <%@ page import="java.util.List" %>
+<%@ include file="header.jsp" %>
 
 <html>
 <head>
-    <title>View Cart</title>
+    <title>Your Cart</title>
 </head>
 <body>
     <h1>Your Shopping Cart</h1>
@@ -26,24 +27,28 @@
                 <table border="1">
                     <tr>
                         <th>Product ID</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
+                        <th>Product Name</th>
                         <th>Price</th>
+                        <th>Quantity</th>
                         <th>Total</th>
                     </tr>
                     <% for (CartItemDTO item : cartItems) { %>
                         <tr>
                             <td><%= item.getProduct().getProductId() %></td>
                             <td><%= item.getProduct().getName() %></td>
-                            <td><%= item.getQuantity() %></td>
                             <td><%= item.getProduct().getPrice() %></td>
+                            <td><%= item.getQuantity() %></td>
                             <td><%= item.getQuantity() * item.getProduct().getPrice() %></td>
                         </tr>
                     <% } %>
                 </table>
+
                 <p>Total Price: <strong>
                     <%= cartItems.stream().mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice()).sum() %>
                 </strong></p>
+
+
+
     <%
             }
         }
