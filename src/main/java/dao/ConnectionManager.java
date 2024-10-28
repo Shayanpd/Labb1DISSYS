@@ -1,33 +1,49 @@
 package dao;
 
+// Import required packages for handling SQL connections
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Manages database connection creation and closing for the webshop application.
+ */
 public class ConnectionManager {
+    // Database connection constants
     private static final String URL = "jdbc:mysql://localhost:3306/webshop_db?useSSL=false&serverTimezone=UTC";
-    private static final String USERNAME = "root"; // replace with your username
-    private static final String PASSWORD = "root"; // replace with your password "&gP3JmX*1h5mV^Ha#UC%6c"
+    private static final String USERNAME = "root";  // Replace with actual database username
+    private static final String PASSWORD = "root";  // Replace with actual database password
+
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Load the driver
+            // Load MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace(); // Handle the error appropriately
+            e.printStackTrace();  // Log error if driver fails to load
         }
     }
 
-    // Method to get a new connection
+    /**
+     * Creates and returns a new database connection.
+     *
+     * @return a new Connection object to the database
+     * @throws SQLException if a database access error occurs
+     */
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
-    // Optionally, you could implement a method to close connections if needed
+    /**
+     * Closes a given database connection if it is open.
+     *
+     * @param connection the Connection object to close
+     */
     public void closeConnection(Connection connection) {
         if (connection != null) {
             try {
-                connection.close();
+                connection.close();  // Attempt to close the connection
             } catch (SQLException e) {
-                e.printStackTrace(); // Handle error
+                e.printStackTrace();  // Log error if connection fails to close
             }
         }
     }

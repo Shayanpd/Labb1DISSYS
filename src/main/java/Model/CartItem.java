@@ -1,11 +1,22 @@
 package Model;
 
+/**
+ * Represents an item in the shopping cart.
+ * Contains details about the product and its quantity in the cart.
+ */
 public class CartItem {
     private int cartItemId;
     private int cartId;
     private Product product;
     private int quantity;
 
+    /**
+     * Constructor to initialize CartItem with all details.
+     * @param cartItemId Unique identifier for the cart item.
+     * @param cartId Unique identifier for the cart.
+     * @param product Product associated with this cart item.
+     * @param quantity Quantity of the product in the cart.
+     */
     public CartItem(int cartItemId, int cartId, Product product, int quantity) {
         this.cartItemId = cartItemId;
         this.cartId = cartId;
@@ -13,6 +24,11 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    /**
+     * Constructor to initialize CartItem with product and quantity only.
+     * @param product Product associated with this cart item.
+     * @param quantity Quantity of the product in the cart.
+     */
     public CartItem(Product product, int quantity) {
         this(0, 0, product, quantity);
     }

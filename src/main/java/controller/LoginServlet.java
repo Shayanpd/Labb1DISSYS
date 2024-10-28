@@ -1,5 +1,6 @@
 package controller;
 
+// Import necessary packages and classes for database operations and session management
 import dao.*;
 import dto.UserDTO;
 import dto.CartDTO;
@@ -13,56 +14,69 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Servlet responsible for handling user login requests and session management.
+ * Maps to the /login URL endpoint.
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    /**
+     * Handles POST requests to authenticate a user and manage session setup based on user role.
+     *
+     * @param request  the HttpServletRequest object containing login credentials
+     * @param response the HttpServletResponse object to send responses to the client
+     * @throws IOException if an input or output error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Retrieve username and password from the login form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         try {
-            // Get the database connection
+            // Establish database connection
             Connection connection = ConnectionManager.getConnection();
 
-            // Create UserDAO with the connection
+            // Instantiate UserDAO with the connection for user authentication
             UserDAO userDAO = new UserDAO(connection);
 
-            // Authenticate the user (this returns a User model)
+            // Attempt to authenticate the user with the provided credentials
             UserDTO user = userDAO.authenticate(username, password);
 
             if (user != null) {
-                // Create a UserDTO to store in session (don't expose full User object)
+                // Create a UserDTO for session storage without exposing sensitive details
                 UserDTO userDTO = new UserDTO(user.getUserId(), user.getUsername(), user.getEmail(), user.getRole());
 
-                // Store the UserDTO in the session
+                // Set up the user's session with relevant attributes
                 HttpSession session = request.getSession();
-                session.setAttribute("user", userDTO);  // Store the UserDTO
+                session.setAttribute("user", userDTO);
 
-                // Handle logic for regular users vs admin
+                // Check user role and set session attributes accordingly
                 if ("user".equals(userDTO.getRole())) {
-                    // Create an empty CartDTO for the user and store it in session
+                    // Regular users have a cart, so create and store an empty CartDTO
                     CartDTO cartDTO = new CartDTO(userDTO.getUserId());
                     session.setAttribute("cart", cartDTO); // Store the cart in the session
 
                     // Redirect to the user information page
                     response.sendRedirect("userInfo.jsp");
-
                 } else {
-                    // Admins don't have a cart, ensure it's removed if it exists
+                    // Admin users do not require a cart, remove if it exists
                     session.removeAttribute("cart");
-                    response.sendRedirect("admin.jsp");  // Redirect to admin page
+                    response.sendRedirect("admin.jsp");  // Redirect to the admin dashboard
                 }
 
             } else {
-                // Authentication failed, redirect back to login with an error flag
+                // Authentication failed, redirect back to login with an error message
                 response.sendRedirect("login.jsp?error=1");
             }
 
-            connection.close();  // Close the connection after use
+            // Close the database connection
+            connection.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("login.jsp?error=1");  // Handle any exceptions
+            response.sendRedirect("login.jsp?error=1");  // Handle exceptions and redirect with error
         }
     }
 }
