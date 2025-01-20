@@ -1,6 +1,7 @@
 package controller;
 
 // Import necessary packages and classes for database operations and session management
+import Model.User;
 import dao.*;
 import dto.UserDTO;
 import dto.CartDTO;
@@ -42,7 +43,7 @@ public class LoginServlet extends HttpServlet {
             UserDAO userDAO = new UserDAO(connection);
 
             // Attempt to authenticate the user with the provided credentials
-            UserDTO user = userDAO.authenticate(username, password);
+            User user = userDAO.authenticate(username, password);
 
             if (user != null) {
                 // Create a UserDTO for session storage without exposing sensitive details

@@ -12,7 +12,7 @@ public class ConnectionManager {
     // Database connection constants
     private static final String URL = "jdbc:mysql://localhost:3306/webshop_db?useSSL=false&serverTimezone=UTC";
     private static final String USERNAME = "root";  // Replace with actual database username
-    private static final String PASSWORD = "root";  // Replace with actual database password
+    private static final String PASSWORD = "Shayan123";  // Replace with actual database password
 
     static {
         try {
